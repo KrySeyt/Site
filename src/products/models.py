@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from sqlalchemy import ForeignKey, LargeBinary
+from sqlalchemy import ForeignKey, LargeBinary, Column
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from src.database import Base
@@ -29,4 +29,4 @@ class Product(Base):
     name: Mapped[str]
     price_id: Mapped[int] = mapped_column(ForeignKey("price_table.id"))
     price: Mapped[Price] = relationship()
-    image = Mapped[LargeBinary]
+    image: Mapped[LargeBinary] = Column(LargeBinary, nullable=False)
