@@ -4,11 +4,7 @@ from pydantic import BaseSettings, PostgresDsn
 
 
 class Settings(BaseSettings):
-    postgresql_url: PostgresDsn | None = None
-
-    class Config:
-        env_prefix = "SITE_"
-        env_nested_delimiter = "__"
+    database_url: PostgresDsn | None = None
 
 
 @lru_cache(maxsize=1)

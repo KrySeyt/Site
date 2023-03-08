@@ -9,7 +9,7 @@ class Base(DeclarativeBase):
 
 
 def get_sqlalchemy_postgres_url() -> str:
-    postgres_url = get_settings().postgresql_url
+    postgres_url = get_settings().database_url
 
     if not isinstance(postgres_url, str):
         raise TypeError("Postgres url is not str")
