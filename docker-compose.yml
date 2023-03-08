@@ -3,6 +3,6 @@ version: "3.8"
 services:
   web:
     ports:
-      - 8000:8000
+      - 50000:8000
     environment:
       - SITE_POSTGRESQL_URL
