@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, Path, Body, Query
+from fastapi import APIRouter, Depends, Path, Body, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import schema as products_schema
 from . import service as products_service
 
 from ..dependencies import get_db_stub
+from ..exceptions import ValidationErrorSchema
 
 
 router = APIRouter(tags=["Products"])
@@ -12,7 +13,8 @@ router = APIRouter(tags=["Products"])
 
 @router.post(
     "/product/",
-    response_model=products_schema.ProductOut
+    response_model=products_schema.ProductOut,
+    responses={422: {"model": ValidationErrorSchema}}
 )
 async def create_product(
         db: AsyncSession = Depends(get_db_stub),
@@ -23,40 +25,53 @@ async def create_product(
 
 @router.delete(
     "/product/{product_id}",
-    response_model=products_schema.ProductOut | None
+    response_model=products_schema.ProductOut,
+    responses={422: {"model": ValidationErrorSchema}, 404: {}}
 )
 async def delete_product(
         db: AsyncSession = Depends(get_db_stub),
         product_id: int = Path()
-) -> products_schema.Product | None:
-    return await products_service.delete_product(db, product_id)
+) -> products_schema.Product:
+    db_product = await products_service.delete_product(db, product_id)
+    if not db_product:
+        raise HTTPException(status_code=404)
+    return db_product
 
 
 @router.put(
     "/product/",
-    response_model=products_schema.ProductOut | None
+    response_model=products_schema.ProductOut,
+    responses={422: {"model": ValidationErrorSchema}, 404: {}}
 )
 async def update_product(
         db: AsyncSession = Depends(get_db_stub),
         product: products_schema.ProductInWithID = Body()
-) -> products_schema.Product | None:
-    return await products_service.update_product(db, product)
+) -> products_schema.Product:
+    db_product = await products_service.update_product(db, product)
+    if not db_product:
+        raise HTTPException(status_code=404)
+    return db_product
 
 
 @router.get(
     "/product/{product_id}",
-    response_model=products_schema.ProductOut | None
+    response_model=products_schema.ProductOut,
+    responses={422: {"model": ValidationErrorSchema}, 404: {}}
 )
 async def get_product(
         db: AsyncSession = Depends(get_db_stub),
         product_id: int = Path()
-) -> products_schema.Product | None:
-    return await products_service.get_product_by_id(db, product_id)
+) -> products_schema.Product:
+    db_product = await products_service.get_product_by_id(db, product_id)
+    if not db_product:
+        raise HTTPException(status_code=404)
+    return db_product
 
 
 @router.get(
     "/products/",
-    response_model=list[products_schema.ProductOut]
+    response_model=list[products_schema.ProductOut],
+    responses={422: {"model": ValidationErrorSchema}}
 )
 async def get_products(
         db: AsyncSession = Depends(get_db_stub),

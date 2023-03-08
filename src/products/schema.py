@@ -42,6 +42,7 @@ class ProductIn(ProductBase):
 
 class ProductInWithID(ProductIn):
     id: int
+    price: PriceInWithID
 
 
 class ProductOut(ProductBase):

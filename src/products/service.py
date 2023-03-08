@@ -69,6 +69,7 @@ async def update_product(db: AsyncSession, product: products_schema.ProductInWit
     db_product = await products_crud.update_product(db, product)
     if not db_product:
         return None
+    await update_price(db, product.price)
     return product_model_to_schema(db_product)
 
 

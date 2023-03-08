@@ -85,8 +85,7 @@ async def update_product(db: AsyncSession, product: products_schema.ProductInWit
         return None
 
     db_product.name = product.name
-    db_product.price.value = product.price.value
-    db_product.price.currency=product.price.currency
+    await update_price(db, product.price)
     db_product.image_url = product.image_url
 
     await db.commit()
