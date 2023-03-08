@@ -12,7 +12,7 @@ router = APIRouter(tags=["Clients"])
 
 
 @router.post(
-    "/client/",
+    "/client",
     response_model=clients_schema.ClientOut,
     responses={422: {"model": ValidationErrorSchema}}
 )
@@ -39,7 +39,7 @@ async def delete_client(
 
 
 @router.put(
-    "/client/",
+    "/client",
     response_model=clients_schema.ClientOut,
     responses={422: {"model": ValidationErrorSchema}, 404: {}}
 )
@@ -69,7 +69,7 @@ async def get_client(
 
 
 @router.get(
-    "/clients/",
+    "/clients",
     response_model=list[clients_schema.ClientOut],
     responses={422: {"model": ValidationErrorSchema}}
 )

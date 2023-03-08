@@ -12,7 +12,7 @@ router = APIRouter(tags=["Products"])
 
 
 @router.post(
-    "/product/",
+    "/product",
     response_model=products_schema.ProductOut,
     responses={422: {"model": ValidationErrorSchema}}
 )
@@ -39,7 +39,7 @@ async def delete_product(
 
 
 @router.put(
-    "/product/",
+    "/product",
     response_model=products_schema.ProductOut,
     responses={422: {"model": ValidationErrorSchema}, 404: {}}
 )
@@ -69,7 +69,7 @@ async def get_product(
 
 
 @router.get(
-    "/products/",
+    "/products",
     response_model=list[products_schema.ProductOut],
     responses={422: {"model": ValidationErrorSchema}}
 )

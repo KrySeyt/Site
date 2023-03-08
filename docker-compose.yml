@@ -5,4 +5,4 @@ services:
     ports:
       - 50000:8000
     environment:
-      - SITE_POSTGRESQL_URL
+      - DATABASE_URL
