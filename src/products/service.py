@@ -81,5 +81,5 @@ async def delete_product(db: AsyncSession, product_id: int) -> products_schema.P
 
 
 async def get_products(db: AsyncSession, skip: int, limit: int) -> list[products_schema.Product]:
-    db_products = await products_crud.get_products(db, skip, limit)
+    db_products = await products_crud.get_products(db, skip=skip, limit=limit)
     return list(map(product_model_to_schema, db_products))

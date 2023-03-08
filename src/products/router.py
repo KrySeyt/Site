@@ -78,4 +78,4 @@ async def get_products(
         skip: int = Query(default=0),
         limit: int = Query(default=100)
 ) -> list[products_schema.Product]:
-    return await products_service.get_products(db, skip, limit)
+    return await products_service.get_products(db, skip=skip, limit=limit)

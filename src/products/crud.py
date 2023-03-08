@@ -76,7 +76,9 @@ async def get_product_by_id(db: AsyncSession, product_id: int) -> models.Product
 
 
 async def get_products(db: AsyncSession, skip: int = 0, limit: int = 100) -> list[models.Product]:
-    return list((await db.execute(select(models.Product).offset(skip).limit(limit))).scalars().all())
+    stmt = select(models.Product).offset(skip).limit(limit).join(models.Price)
+    result = await db.execute(stmt)
+    return list(result.scalars().all())
 
 
 async def update_product(db: AsyncSession, product: products_schema.ProductInWithID) -> models.Product | None:
